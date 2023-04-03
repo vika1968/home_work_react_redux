@@ -4,7 +4,7 @@ import axios from "axios";
 import ApiMenu from "./api/ApiMenu";
 
 interface CardMenu {
-  _id: string;
+  _id: string, 
   rname: string;
   imgdata: string;
   address: string;
@@ -23,6 +23,7 @@ const MenuList = () => {
       const { data } = await axios.get("/api/products");
       const productsArray = data.productsDB;
       setMenu(productsArray);
+      
     } catch (error) {
       console.error(error);
     }
@@ -31,14 +32,15 @@ const MenuList = () => {
   useEffect(() => {
     handleMenu();
   }, []);
+  
 
   return (
     <div className="img-box">
       {menu.map((element, index) => {
         return (
-          <ApiMenu
-            _id={element._id}
+          <ApiMenu          
             key={index}
+            _id={element._id}
             rname={element.rname}
             imgdata={element.imgdata}
             address={element.address}

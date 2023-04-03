@@ -1,18 +1,18 @@
 * {
    margin: 0;
    padding: 0;
- }
+}
 
- /* стили для Layout */
+/* стили для Layout */
 header {
    position: fixed;
    top: 0;
    left: 0;
    width: 100%;
    z-index: 1;
- }
- 
- 
+}
+
+
 body {
    font-family: Helvetica, Arial, sans-serif;
    padding: 0;
@@ -21,8 +21,9 @@ body {
 }
 
 body {
-   padding-top: 80px; /* высота вашего Layout */
- }
+   padding-top: 80px;
+   /* высота вашего Layout */
+}
 
 /* Section logo */
 .section_logo .logo img {
@@ -48,7 +49,7 @@ header label {
 
 header nav,
 header .leb-menu {
-   background-color:  #2f6c9e; //#997a8d;#04948c;
+   background-color: #2f6c9e; //#997a8d;#04948c;
 }
 
 .menu {
@@ -81,6 +82,30 @@ header .leb-menu {
          text-transform: uppercase;
          font-size: 16px;
       }
+   }
+
+
+   .badge-wrapper {
+      position: relative;
+      display: inline-block;
+      padding-right: 20px;
+   }
+
+   .badge {
+      position: absolute;
+      top: -10px;
+      right: 10px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: red;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      
    }
 
    .section_social_networks {
@@ -169,7 +194,7 @@ header label:hover {
          justify-content: space-around;
       }
 
-   }  
+   }
 }
 
 @media all and (max-width: 800px) {
@@ -179,6 +204,7 @@ header label:hover {
 }
 
 @media all and (max-width: 650px) {
+
    //small monitor
    .menu {
       display: block;

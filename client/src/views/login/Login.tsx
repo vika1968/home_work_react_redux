@@ -19,7 +19,7 @@ const Login = () => {
 
   if (user) {
    // navigate("/card");
-    <redirect to={{ pathname: "/login" }} />
+ //   <redirect to={{ pathname: "/login" }} />
     //<Link to={"/card"}>To example</Link>
    //console.log(user)
   
