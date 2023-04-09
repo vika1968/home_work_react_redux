@@ -1,22 +1,9 @@
-//https://dog.ceo/dog-api/
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import { ADD_CART } from "../../features/menu/cartSlice";
+import { Add_Cart } from "../../features/menu/cartSlice";
+import  MenuScheme  from "./MenuScheme"
 
-interface CardMenu {
-  _id:string,
-  rname: string;
-  imgdata: string;
-  address: string;
-  delimg: string;
-  somedata: string;
-  price: number;
-  rating: string;
-  arrimg: string;
-  qnty: number;
-}
-const ApiMenu: FC<CardMenu> = ({
+const ApiMenu: FC<MenuScheme> = ({
   _id,
   rname,
   imgdata,
@@ -28,48 +15,33 @@ const ApiMenu: FC<CardMenu> = ({
   arrimg,
   qnty,
 }) => {
-  //let urlWiki: string = `/wikisearch/`;
+
   const dispatch = useDispatch();
-  const send = (e: any)=>{
-    // console.log(e);
-    dispatch(ADD_CART(e));
+  const send = (element: any)=>{
+    dispatch(Add_Cart(element));
   }
 
-  return (
-    <div className="image-gallery">
-      <div className="image-container">
-        <img className="images" src={imgdata} alt="" />
+return (
+<div className="image-gallery">
+  <div className="image-container">
+    <img className="image-container__image" src={imgdata} alt="" />
 
-        <div className="span-container">
-          <span>
-            <div className="dish-name">
-              {rname}
-              {/* <div className="">{address} </div>
-              <img src={delimg} />
-              <br />
-              {somedata}*/}
-              <br /> 
-              price : {price}
-              <br />
-              {/* rating : {rating}
-              <br />
-              <img src={arrimg} />
-              <br />
-             you ordered : {qnty} */}
-             <div className="button-div">
-                    <button  className="button-add"
-                     onClick={() => send({ _id, rname, imgdata, address, delimg, somedata, price, rating, arrimg, qnty})}
-                     >Add to Cart</button>
-             </div>
-            </div>
-
-            {/* <Link to={urlWiki + rname} state={rname} className="gotowiki">
-              For more info click here ...
-            </Link> */}
-          </span>
-        </div>
-      </div>
+    <div className="image-container__caption">
+      <span>
+        <div className="caption__dish-name">
+          {rname}             
+          <br /> 
+          <span className="caption__price">Price : ${price}</span>
+          <br />             
+          <div className="caption__button-container">
+            <button className="caption__button-add" onClick={() => send({ _id, rname, imgdata, address, delimg, somedata, price, rating, arrimg, qnty})}>Add to Cart</button>
+          </div>
+        </div>        
+      </span>
     </div>
+  </div>
+</div>
+    
   );
 };
 

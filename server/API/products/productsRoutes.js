@@ -8,9 +8,5 @@ const productsCtrl_1 = require("./productsCtrl");
 const router = express_1.default.Router();
 router
     .get("", productsCtrl_1.getAllProducts)
-    .get("/get-user-by-cookie", productsCtrl_1.showUser)
-    .get("/find/:_id", productsCtrl_1.getProductById)
-    .post("/insert-products", productsCtrl_1.insertProducts)
-    .post("/insert-productsall", productsCtrl_1.insertProductsAll)
-    .post("/chosed", productsCtrl_1.getProductByCategory);
+    .post("/insert-productsall", productsCtrl_1.insertProductsAll);
 exports.default = router;

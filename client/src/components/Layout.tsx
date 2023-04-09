@@ -1,4 +1,4 @@
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import logo from "../images/yammi.jpg";
 import facebook from "../images/facebook.png";
 import youtube from "../images/images.jpg";
@@ -8,53 +8,44 @@ import { ReactNode, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { RMV_CART } from "../features/menu/cartSlice";
-
-import cartSlice from "../../src/features/menu/cartSlice";
+import { Remove_Cart } from "../features/menu/cartSlice";
 import { cartSelector } from "./../features/menu/cartSlice";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
-import { isAbsolute } from "path";
+
 type LayoutProps = {
   children: ReactNode;
 };
 
 function Layout({ children }: LayoutProps) {
+  const location = useLocation();  
   const [price, setPrice] = useState(0);
-  // console.log(price);
-
-  //const getdata = useSelector((state: any) => cartSlice);
-  const getdata = useSelector(cartSelector);
-
-  console.log(getdata);
-
+  const getdata = useSelector(cartSelector);   
   const dispatch = useDispatch();
 
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: any) => {
-    setAnchorEl(event.currentTarget);
+  const [anchorElement, setAnchorElement] = useState(null);
+  const handleClose = () => {   
+    setAnchorElement(null);   
+  };
+ 
+  const [showDiv, setShowDiv] = useState(false);
+  const toggleDiv = () => { setShowDiv(!showDiv) };
+
+  const deleteCart = (element: any) => {
+    dispatch(Remove_Cart(element));
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const dlt = (_id: any) => {
-    dispatch(RMV_CART(_id));
-  };
-
-  const total = () => {
+  const totalSum = () => {
     let price = 0;
-    getdata.map((element: any, k: any) => {
-      price = element.price * element.qnty + price;
+      getdata.map((element: any, index: any) => {
+       price = element.price * element.qnty + price;
     });
     setPrice(price);
   };
 
   useEffect(() => {
-    total();
-  }, [total]);
+    totalSum(); 
+  }, [totalSum]);
 
   return (
     <header>
@@ -66,19 +57,21 @@ function Layout({ children }: LayoutProps) {
       </div>
 
       <nav className="menu">
-        <div className="section_logo">
+        <div className="section-logo">
           <div className="logo">
             <img src={logo} />
           </div>
         </div>
 
-        <div className="section_main_menu">
+        <div className="section-main-menu">
           <ul>
             <li>
-              <Link to="/">Home</Link>
+              <Link to="/card">Menu List</Link>
             </li>
             <li>
-              <Link to="https://www.tripadvisor.com/Restaurant_Review-g737051-d12006693-Reviews-Yummy_Restaurant-Cat_Ba_Hai_Phong.html">
+              <Link to="https://www.tripadvisor.com/Restaurant_Review-g737051-d12006693-Reviews-Yummy_Restaurant-Cat_Ba_Hai_Phong.html"
+              target="_blank"
+              >
                 Tripadvicor
               </Link>
             </li>
@@ -92,138 +85,79 @@ function Layout({ children }: LayoutProps) {
             </li>
           </ul>
         </div>
-        {/* --Shopping icon  */}
-        <div className="badge-wrapper" onClick={handleClick}>
-          <FontAwesomeIcon
-            icon={faCartShopping}
-            style={{ fontSize: 25, cursor: "pointer" }}
-          />
+        {/* --Shopping icon-- */}
+        <div className="badge-wrapper" onClick={toggleDiv}>
+          <FontAwesomeIcon className="badge-wrapper__shopping-cart-icon" icon={faCartShopping} />
           <div className="badge">{getdata.length}</div>
         </div>
-        {/* --Shopping icon  */}
-        <div>
-          {open && (
+        {/* --Shopping icon--*/}
+        <div className="menu-container__global" onClick={handleClose}>
+          {(showDiv && location.pathname === '/card') && (
             <div className="menu-container">
               {getdata.length ? (
-                <div
-                  className="card-details"
-                  style={{
-                    width: "24rem",
-                    padding: 10,
-                    position: "absolute",
-                    top: 55,
-                    right: -10,
-                    zIndex: 100,
-                    color: "black",
-                    border: "1px solid black",
-                  }}
-                >
-                  <table>
-                    <thead>
+                <div className="card-details">       
+                   <table>                  
+                     <thead>
                       <tr>
                         <th>Photo</th>
                         <th>Restaurant Name</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {getdata.map((e) => {
+                      {getdata.map((element) => {
                         return (
-                          <tr key={e._id}>
+                          <tr key={element._id}>
                             <td>
-                              <NavLink
-                                to={`/cart/${e._id}`}
-                                onClick={handleClose}
-                              >
-                                <img
-                                  src={e.imgdata}
-                                  style={{ width: "5rem", height: "5rem" }}
-                                  alt=""
-                                />
+                              <NavLink to={`/cart/${element._id}`} onClick={handleClose}>
+                                <img src={element.imgdata} alt=""/>                       
                               </NavLink>
                             </td>
                             <td>
-                              <p>{e.rname}</p>
-                              <p>Price: ${e.price}</p>
-                              <p>Quantity: {e.qnty}</p>
-                              <p
-                                style={{
-                                  color: "red",
-                                  fontSize: 20,
-                                  cursor: "pointer",
-                                }}
-                                onClick={() => dlt(e._id)}
-                              >                               
-                              </p>
+                              <p>{element.rname}</p>
+                              <p>Price: ${element.price}</p>
+                              <p>Quantity: {element.qnty}</p>
                             </td>
-                            <td
-                              className="mt-5"
-                              style={{
-                                color: "red",
-                                fontSize: 20,
-                                cursor: "pointer",
-                              }}
-                              onClick={() => dlt(e._id)}
-                            >
-                              {/* <i className="fas fa-trash largetrash"></i> */}
+                            <td className="trash" onClick={() => deleteCart(element)}>
                               <FontAwesomeIcon icon={faTrash} />
                             </td>
                           </tr>
                         );
                       })}
-                      <p className="text-center">Total: ${price}</p>
                     </tbody>
+                    <tfoot>
+                      <tr>
+                        <td className="price-total" >
+                          <p className="price-total__sum">Total: ${price}</p>
+                        </td>
+                      </tr>
+                    </tfoot>
                   </table>
                 </div>
               ) : (
-                <div
-                  className="card-details"
-                  style={{ width: "24rem", padding: 10, position: "relative" }}
-                >
-                  <FontAwesomeIcon
-                    icon={faClose}
-                    onClick={handleClose}
-                    style={{
-                      position: "absolute",
-                      top: 2,
-                      right: 20,
-                      fontSize: 23,
-                      cursor: "pointer",
-                    }}
-                  />
-                  <p style={{ fontSize: 22 }}>Your cart is empty</p>
-                  <img
-                    src="./cart.gif"
-                    alt=""
-                    className="emptycart-img"
-                    style={{ width: "5rem", 
-                    padding: 10 }}
-                  />
+                <div className="card-details">
+                  <FontAwesomeIcon className="close-icon" icon={faClose} onClick={toggleDiv} />                   
+                   <p className="paragraph-empty-card">Your cart is empty</p>
+                   <img className="emptycart-img" src="./cart.gif" alt=""/>
                 </div>
               )}
             </div>
           )}
         </div>
 
-        {/*  */}
-        <div className="section_social_networks">
+        {/* ---------------------------- */}
+        <div className="section-social-networks">
           <button>
             <Link to="https://www.facebook.com/yummycatba" target="_blank">
               <img src={facebook} alt="Facebook" />
             </Link>
           </button>
           <button>
-            <Link
-              to="https://www.youtube.com/watch?v=Iwc6mEHQBFc"
-              target="_blank"
-            >
+            <Link to="https://www.youtube.com/watch?v=Iwc6mEHQBFc" target="_blank">
               <img src={youtube} alt="Youtube" />
             </Link>
           </button>
           <button>
-            <Link
-              to="https://twitter.com/_restaurant_bot/status/1623938594514649088?lang=en"
-              target="_blank"
-            >
+            <Link to="https://twitter.com/_restaurant_bot/status/1623938594514649088?lang=en" target="_blank">
               <img src={twitter} alt="Twitter" />
             </Link>
           </button>

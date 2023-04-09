@@ -35,7 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserByID = exports.updateUserByID = exports.getUserById = exports.getUserByCookie = exports.getAllUsers = exports.getUser = exports.logout = exports.login = exports.register = void 0;
+exports.getUser = exports.login = exports.register = void 0;
 const userModel_1 = __importStar(require("./userModel"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jwt_simple_1 = __importDefault(require("jwt-simple"));
@@ -45,7 +45,7 @@ function register(req, res) {
         try {
             const { email, password } = req.body;
             if (!email || !password)
-                throw new Error("Couldn't get all fields from req.body");
+                throw new Error("Not all fields are available from req.body");
             const { error } = userModel_1.UserValidation.validate({ email, password });
             if (error)
                 throw error;
@@ -53,7 +53,7 @@ function register(req, res) {
             const hash = bcrypt_1.default.hashSync(password, salt);
             const userDB = new userModel_1.default({ email, password: hash });
             yield userDB.save();
-            //sending cookie
+            //creating cookie
             const cookie = { userId: userDB._id };
             const secret = process.env.JWT_SECRET;
             if (!secret)
@@ -73,76 +73,28 @@ function register(req, res) {
     });
 }
 exports.register = register;
-//---- Register new user -----
-// export async function register(req: express.Request, res: express.Response) {
-//   try {
-//     const { username, password } = req.body;
-//     if (!username || !password) throw new Error("Not all requered fields from client on FUNCTION register in file userCtrl");
-//     const { error } = UserValidation.validate({
-//       username,
-//       password
-//     });
-//     if (error) throw error;
-//     const salt = bcrypt.genSaltSync(saltRounds);
-//     const hash = bcrypt.hashSync(password, salt);
-//     const userDB = new UserModel({ username, password: hash });
-//     await userDB.save();
-//     const cookie = { userId: userDB._id };
-//     const secret = process.env.JWT_SECRET;
-//     if (!secret) throw new Error("Couldn't load secret from .env");
-//     if (!userDB) throw new Error("No user was created");
-//     const JWTCookie = jwt.encode(cookie, secret);
-//     if (userDB) {
-//       res.cookie("userID", JWTCookie);
-//       res.send({ success: true, userDB });
-//     } else {
-//       res.send({ register: false });
-//     }
-//   } catch (error: any) {
-//     res.status(500).send({ success: false, error: error.message });
-//   }
-// }
-// export async function login(req: express.Request, res: express.Response) {
-//   try {
-//     const { email, password } = req.body;
-//     if (!email || !password)
-//       throw new Error("Couldn't get all fields from req.body");
-//     const userDB = await UserModel.findOne({ email }); // userDB: {email: gili@gili.com, password: dfjkghfudhgvukzdfhgvz}
-//     if (!userDB) throw new Error("User with that email can't be found");
-//     if (!userDB.password) throw new Error("No password in DB");
-//     const isMatch = await bcrypt.compare(password, userDB.password);
-//     if (!isMatch) throw new Error("Email or password do not match");
-//     //sending cookie
-//     const cookie = { userId: userDB._id };
-//     const secret = process.env.JWT_SECRET;
-//     if (!secret) throw new Error("Couldn't load secret from .env");
-//     const JWTCookie = jwt.encode(cookie, secret);
-//     userDB.password = undefined //not on DB: userDB: {email: gili@gili.com, password: undefiend}
-//     res.cookie("userID", JWTCookie);
-//     res.send({ login: true, userDB });
-//   } catch (error: any) {
-//     res.status(500).send({ error: error.message });
-//   }
-// }
-//---- Login user -----
 function login(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            console.log('req');
             const { email, password } = req.body;
+            if (!email || !password)
+                throw new Error("Not all fields are available from req.body");
             const userDB = yield userModel_1.default.findOne({ email });
             if (!userDB)
-                throw new Error("Username (email) don't match");
-            const isMatch = yield bcrypt_1.default.compare(email, userDB.email);
+                throw new Error("User with that email can't be found");
+            if (!userDB.password)
+                throw new Error("No password in DB");
+            const isMatch = yield bcrypt_1.default.compare(password, userDB.password);
             if (!isMatch)
-                throw new Error("Username (email) and Password don't match");
+                throw new Error("Email or password do not match");
+            //creating cookie
             const cookie = { userId: userDB._id };
             const secret = process.env.JWT_SECRET;
             if (!secret)
                 throw new Error("Couldn't load secret from .env");
             const JWTCookie = jwt_simple_1.default.encode(cookie, secret);
             res.cookie("userID", JWTCookie);
-            res.send({ success: true, userDB: userDB });
+            res.send({ success: true, userDB });
         }
         catch (error) {
             res.status(500).send({ success: false, error: error.message });
@@ -150,18 +102,6 @@ function login(req, res) {
     });
 }
 exports.login = login;
-function logout(req, res) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            res.clearCookie("userID");
-            res.send({ logout: true });
-        }
-        catch (error) {
-            res.status(500).send({ error: error.message });
-        }
-    });
-}
-exports.logout = logout;
 function getUser(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -175,7 +115,7 @@ function getUser(req, res) {
             const { userId } = decodedUserId;
             const userDB = yield userModel_1.default.findById(userId);
             if (!userDB)
-                throw new Error(`Couldn't find user id with the id: ${userId}`);
+                throw new Error(`Couldn't find user id with the id: ${userID}`);
             userDB.password = undefined;
             res.send({ userDB });
         }
@@ -185,69 +125,3 @@ function getUser(req, res) {
     });
 }
 exports.getUser = getUser;
-//get All documents
-function getAllUsers(req, res) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const usersDB = yield userModel_1.default.find();
-            res.send({ usersDB });
-        }
-        catch (error) {
-            res.status(500).send({ error: error.message });
-        }
-    });
-}
-exports.getAllUsers = getAllUsers;
-function getUserByCookie(req, res) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            res.send({ test: "test" });
-        }
-        catch (error) {
-            res.status(500).send({ error: error.message });
-        }
-    });
-}
-exports.getUserByCookie = getUserByCookie;
-//get user by id
-function getUserById(req, res) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const userDB = yield userModel_1.default.findById(req.params.id);
-            res.send({ userDB });
-        }
-        catch (error) {
-            res.status(500).send({ error: error.message });
-        }
-    });
-}
-exports.getUserById = getUserById;
-function updateUserByID(req, res) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            //who to change? // to what information // option - send new doc / run the validations again
-            const userDB = yield userModel_1.default.findByIdAndUpdate(req.params.id, req.body, {
-                new: true,
-                runValidators: true,
-            });
-            res.send({ userDB });
-        }
-        catch (error) {
-            res.status(500).send({ error: error.message });
-        }
-    });
-}
-exports.updateUserByID = updateUserByID;
-function deleteUserByID(req, res) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            //who to change? // to what information // option - send new doc
-            const userDB = yield userModel_1.default.findByIdAndDelete(req.params.id);
-            res.send({ userDB });
-        }
-        catch (error) {
-            res.status(500).send({ error: error.message });
-        }
-    });
-}
-exports.deleteUserByID = deleteUserByID;

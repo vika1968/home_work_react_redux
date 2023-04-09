@@ -3,7 +3,6 @@
    padding: 0;
 }
 
-/* стили для Layout */
 header {
    position: fixed;
    top: 0;
@@ -11,7 +10,6 @@ header {
    width: 100%;
    z-index: 1;
 }
-
 
 body {
    font-family: Helvetica, Arial, sans-serif;
@@ -22,11 +20,10 @@ body {
 
 body {
    padding-top: 80px;
-   /* высота вашего Layout */
 }
 
 /* Section logo */
-.section_logo .logo img {
+.section-logo .logo img {
    height: 52px;
    width: 100%;
    opacity: 2.8;
@@ -34,7 +31,7 @@ body {
 }
 
 /* Section main_menu */
-div .section_main_menu {
+div .section-main-menu {
    max-width: 1100px;
    padding: 0 20px;
    margin: 0 auto;
@@ -49,7 +46,7 @@ header label {
 
 header nav,
 header .leb-menu {
-   background-color: #2f6c9e; //#997a8d;#04948c;
+   background-color: #2f6c9e; 
 }
 
 .menu {
@@ -58,12 +55,12 @@ header .leb-menu {
    justify-content: space-between; // straightens elements along line X
    align-items: center; // straightens elements along line y
 
-   .section_logo .logo {
+   .section-logo .logo {
       height: 55px;
       width: 55px;
    }
 
-   .section_main_menu ul {
+   .section-main-menu ul {
       margin: 0;
       list-style: none;
       padding: 0;
@@ -84,32 +81,91 @@ header .leb-menu {
       }
    }
 
-
    .badge-wrapper {
       position: relative;
       display: inline-block;
       padding-right: 20px;
+
+      .badge-wrapper__shopping-cart-icon {
+         font-size: 25px;
+         cursor: pointer;
+      }
+
+      .badge {
+         position: absolute;
+         top: -10px;
+         right: 10px;
+         width: 20px;
+         height: 20px;
+         border-radius: 50%;
+         background-color: red;
+         color: white;
+         font-size: 12px;
+         font-weight: bold;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+      }
    }
 
-   .badge {
+   .menu-container__global .menu-container .card-details {
+      padding: 10px;
+      width: 18rem;
       position: absolute;
-      top: -10px;
-      right: 10px;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background-color: red;
-      color: white;
-      font-size: 12px;
-      font-weight: bold;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      
+      top: 55px;
+      right: -10px;
+      z-index: 100;
+      color: black;
+
+      table {
+         border: 1px solid white;
+         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+
+         td {
+            padding: 10px;
+
+            img {
+               width: 5rem;
+               height: 5rem;
+            }
+         }
+
+         .trash {
+            color: red;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 10px;
+         }
+      }
+
+      .price-total,
+      .price-total__sum {
+         font-size: 15px;
+         color: red;
+         font-style: italic;
+      }
+
+      .close-icon{         
+            position: absolute;
+            top: 2px;
+            right: 20px;
+            font-size: 23px;
+            cursor: pointer;              
+      }
+
+      .paragraph-empty-card{
+         font-size: 22px;         
+      }
+
+      .emptycart-img{
+          width: 3rem;
+          height: 3rem;
+          padding: 10px;     
+       }
    }
 
-   .section_social_networks {
-      background-color: #2f6c9e; //#997a8d; #04948c;
+   .section-social-networks {
+      background-color: #2f6c9e;
       box-sizing: border-box;
       height: 100%;
       display: flex;
@@ -157,7 +213,7 @@ header label:hover {
    #dws-menu:checked~.menu {
       margin: 0px;
 
-      .section_social_networks {
+      .section-social-networks {
          border-top: 1px solid white;
       }
    }
@@ -169,11 +225,14 @@ header label:hover {
       margin-left: -200px;
       transition: all 0.5s;
 
-      .section_logo .logo {
+      .section-logo .logo {
+         display: none;
+      }
+      .badge-wrapper, .menu-container__global{
          display: none;
       }
 
-      .section_main_menu {
+      .section-main-menu {
          padding: 0;
 
          ul {
@@ -190,7 +249,7 @@ header label:hover {
          }
       }
 
-      .section_social_networks {
+      .section-social-networks {
          justify-content: space-around;
       }
 
@@ -204,7 +263,6 @@ header label:hover {
 }
 
 @media all and (max-width: 650px) {
-
    //small monitor
    .menu {
       display: block;

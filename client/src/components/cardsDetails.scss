@@ -1,0 +1,87 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  font-size: 20px;
+}
+
+.card-container {
+  h2 {
+    padding: 25px;
+    color: black;
+    text-align: center;
+    font-size: 45px;
+    font-family:'Times New Roman', Times, serif;
+    color: #2f6c9e;
+   }
+
+  .section-container {
+    padding: 25px;
+  
+    .items-details, .main-container {
+      text-align: center;
+      display: flex;
+      justify-content: center;
+
+      .section-container__img {
+        margin-right: 20px;
+
+        img {
+          height: 250px;
+          width: 350px;
+        }
+      }
+
+      .section-container__details {
+        margin-left: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        color: black;
+        box-shadow: 0px 0px 5px rgba(128, 128, 128, 0.5);
+
+        .cart-item__quantity {
+
+          .cart-item__quantity-button,
+          .cart-item__quantity-count {
+            font-size: 24px;
+            background-color: gainsboro;
+          }
+
+          .cart-item__quantity-button {
+            cursor: pointer;
+          }
+        }
+
+        .cart-item__remove {
+          color: red;
+          font-size: 20;
+          cursor: pointer;
+        }
+      }
+
+      .cart-item__rating-value {
+        background-color: green;
+        color: #fff;
+        padding: 2px 5px;
+        border-radius: 5px;
+      }
+
+      .cart-item {
+        td p {
+          margin: 10px;
+          padding: 5px;
+        }
+
+        tr p {
+          margin: 10px;
+          padding: 5px;
+        }
+      }
+
+    }
+  }
+}
