@@ -101,8 +101,7 @@ const Login = () => {
         <input className="login__input-password input" name="password" id="idPassword" value={password} type="password" placeholder="password" required onInput={(ev: any) => {setPassword(ev.target.value)}} 
           onChange={(ev: any) => {handleChange(ev.target.value)}}/>
         <span>password</span>
-        <div className="login__error">{error ? error : ""} </div>
-        <br />
+        <div className="login__error">{error ? error : ""} </div>       
         <button className="login__button">{isActive ? "login" : "register"}</button>
       </form>
     </div>

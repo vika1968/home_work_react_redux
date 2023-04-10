@@ -1,10 +1,9 @@
 @import "./views/login/login.scss";
-@import "./components/cards.scss";
+@import "./components/cardsData.scss";
 @import "./components/layout.scss";
-// @import "./components/api/breeds.scss";
 @import "./components/api/apiMenu.scss";
 @import "./components/cardsDetails.scss"; 
-//@import "./components/api/onebreedlist.scss";
+
 .App {
   text-align: center;
 }
