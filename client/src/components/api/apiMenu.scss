@@ -22,14 +22,14 @@ body {
     justify-content: center;
 
     .image-container {
-      flex-basis: 350px;
+      flex-basis: 250px;
       border: 2px solid #2f6c9e;      
       border-radius: 35px;
 
       .image-container__image {
         object-fit: cover;
         width: 100%;
-        height: 350px;
+        height: 250px;
 
         border-radius: 35px;
         border: 1px solid #ccc;

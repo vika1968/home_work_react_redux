@@ -99,10 +99,10 @@ function Layout({ children }: LayoutProps) {
                    <table>                  
                      <thead>
                       <tr>
-                        <th>Photo</th>
-                        <th>Restaurant Name</th>
-                      </tr>
-                    </thead>
+                        <th>Photo</th>                       
+                        <th>Restaurant Name</th>                       
+                      </tr>                 
+                    </thead>                  
                     <tbody>
                       {getdata.map((element) => {
                         return (

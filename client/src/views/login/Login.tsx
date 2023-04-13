@@ -1,7 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Cardsdata from "../../components/CardsData";
 
 const Login = () => {
   const [error, setError] = useState("");
@@ -81,10 +80,10 @@ const Login = () => {
     }
   }
 
-  for (let i = 0; i < Cardsdata.length; i++) {
+  //for (let i = 0; i < Cardsdata.length; i++) {
     //   insertProductsAll(product[i].rname, product[i].imgdata, product[i].address, product[i].delimg, product[i].somedata, product[i].price, product[i].rating, product[i].arrimg, product[i].qnty )
     //    console.log (product[i].rname, product[i].imgdata, product[i].address, product[i].delimg, product[i].somedata, product[i].price, product[i].rating, product[i].arrimg, product[i].qnty)
-  }
+ // }
  //--------------------End of filling DataBase--------------------------------------------------------------
 
   return ( 

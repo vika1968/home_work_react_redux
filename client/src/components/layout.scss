@@ -87,7 +87,7 @@ header .leb-menu {
       padding-right: 20px;
 
       .badge-wrapper__shopping-cart-icon {
-         font-size: 25px;
+         font-size: 15px;
          cursor: pointer;
       }
 
@@ -100,7 +100,7 @@ header .leb-menu {
          border-radius: 50%;
          background-color: red;
          color: white;
-         font-size: 12px;
+         font-size: 10px;
          font-weight: bold;
          display: flex;
          justify-content: center;
@@ -110,7 +110,7 @@ header .leb-menu {
 
    .menu-container__global .menu-container .card-details {
       padding: 10px;
-      width: 18rem;
+      width: 8 rem;
       position: absolute;
       top: 55px;
       right: -10px;
@@ -119,10 +119,15 @@ header .leb-menu {
 
       table {
          border: 1px solid white;
-         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-
+         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);   
+           
+         thead{
+            font-size: 15px;
+         }        
+          
          td {
-            padding: 10px;
+            padding: 5px;
+            font-size: 15px;
 
             img {
                width: 5rem;
@@ -132,7 +137,7 @@ header .leb-menu {
 
          .trash {
             color: red;
-            font-size: 20px;
+            font-size: 15px;
             cursor: pointer;
             padding: 10px;
          }
@@ -149,7 +154,7 @@ header .leb-menu {
             position: absolute;
             top: 2px;
             right: 20px;
-            font-size: 23px;
+            font-size: 15px;
             cursor: pointer;              
       }
 
