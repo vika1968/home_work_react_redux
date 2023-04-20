@@ -8,7 +8,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { Remove_Cart } from "../features/menu/cartSlice";
+import { CartItem, Remove_Cart } from "../features/menu/cartSlice";
 import { cartSelector } from "./../features/menu/cartSlice";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
@@ -31,13 +31,13 @@ function Layout({ children }: LayoutProps) {
   const [showDiv, setShowDiv] = useState(false);
   const toggleDiv = () => { setShowDiv(!showDiv) };
 
-  const deleteCart = (element: any) => {
+  const deleteCart = (element: CartItem) => {
     dispatch(Remove_Cart(element));
   };
 
   const totalSum = () => {
     let price = 0;
-      getdata.map((element: any, index: any) => {
+      getdata.map((element: CartItem, index: number) => {
        price = element.price * element.qnty + price;
     });
     setPrice(price);

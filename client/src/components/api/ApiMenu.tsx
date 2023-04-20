@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { useDispatch } from "react-redux";
-import { Add_Cart } from "../../features/menu/cartSlice";
+import { Add_Cart, CartItem } from "../../features/menu/cartSlice";
 import  MenuScheme  from "./MenuScheme"
 
 const ApiMenu: FC<MenuScheme> = ({
@@ -17,7 +17,7 @@ const ApiMenu: FC<MenuScheme> = ({
 }) => {
 
   const dispatch = useDispatch();
-  const send = (element: any)=>{
+  const send = (element: CartItem)=>{
     dispatch(Add_Cart(element));
   }
 

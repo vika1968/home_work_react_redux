@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MenuScheme from "./api/MenuScheme";
 
 const CardsDetails = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<MenuScheme[]>([]);
   const { id } = useParams();
 
   const history = useNavigate();
@@ -15,8 +15,8 @@ const CardsDetails = () => {
   const getdata = useSelector((state: any) => state.cart.carts);
 
   const compare = () => {
-    let comparedata: any = getdata.filter((e: any, index: any) => {
-      return e._id == id;
+    let comparedata:MenuScheme[] = getdata.filter((element: MenuScheme, index: number) => {
+      return element._id == id;
     });
     setData(comparedata);
   };
