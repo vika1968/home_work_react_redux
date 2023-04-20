@@ -28,7 +28,7 @@ export const cartSlice = createSlice({
   reducers: {
 
     Add_Cart: (state, action: PayloadAction<CartItem>) => {
-      const itemIndex = state.carts.findIndex((item) => item._id == action.payload._id);
+      const itemIndex = state.carts.findIndex((item) => item._id === action.payload._id);
       if (itemIndex >= 0) {
         state.carts[itemIndex].qnty += 1;
       }

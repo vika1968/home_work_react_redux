@@ -15,8 +15,8 @@ const CardsDetails = () => {
   const getdata = useSelector((state: any) => state.cart.carts);
 
   const compare = () => {
-    let comparedata:MenuScheme[] = getdata.filter((element: MenuScheme, index: number) => {
-      return element._id == id;
+    let comparedata: MenuScheme[] = getdata.filter((element: MenuScheme) => {
+      return element._id === id;
     });
     setData(comparedata);
   };

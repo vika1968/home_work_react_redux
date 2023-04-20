@@ -18,18 +18,20 @@ type LayoutProps = {
 };
 
 function Layout({ children }: LayoutProps) {
-  const location = useLocation();  
+  const location = useLocation();
   const [price, setPrice] = useState(0);
-  const getdata = useSelector(cartSelector);   
+  const getdata = useSelector(cartSelector);
   const dispatch = useDispatch();
 
   const [anchorElement, setAnchorElement] = useState(null);
-  const handleClose = () => {   
-    setAnchorElement(null);   
+  const handleClose = () => {
+    setAnchorElement(null);
   };
- 
+
   const [showDiv, setShowDiv] = useState(false);
-  const toggleDiv = () => { setShowDiv(!showDiv) };
+  const toggleDiv = () => {
+    setShowDiv(!showDiv);
+  };
 
   const deleteCart = (element: CartItem) => {
     dispatch(Remove_Cart(element));
@@ -37,29 +39,29 @@ function Layout({ children }: LayoutProps) {
 
   const totalSum = () => {
     let price = 0;
-      getdata.map((element: CartItem, index: number) => {
-       price = element.price * element.qnty + price;
-    });
+    getdata.map(
+      (element: CartItem) => (price = element.price * element.qnty + price)
+    );
     setPrice(price);
   };
 
   useEffect(() => {
-    totalSum(); 
-  }, [totalSum]);
+    totalSum();
+  }, [getdata, anchorElement]);
 
   return (
     <header>
       <input type="checkbox" id="dws-menu" />
       <div className="leb-menu">
         <label htmlFor="dws-menu">
-          <img src={menuimg} />
+          <img src={menuimg} alt="" />
         </label>
       </div>
 
       <nav className="menu">
         <div className="section-logo">
           <div className="logo">
-            <img src={logo} />
+            <img src={logo} alt="" />
           </div>
         </div>
 
@@ -69,8 +71,9 @@ function Layout({ children }: LayoutProps) {
               <Link to="/card">Menu List</Link>
             </li>
             <li>
-              <Link to="https://www.tripadvisor.com/Restaurant_Review-g737051-d12006693-Reviews-Yummy_Restaurant-Cat_Ba_Hai_Phong.html"
-              target="_blank"
+              <Link
+                to="https://www.tripadvisor.com/Restaurant_Review-g737051-d12006693-Reviews-Yummy_Restaurant-Cat_Ba_Hai_Phong.html"
+                target="_blank"
               >
                 Tripadvicor
               </Link>
@@ -87,29 +90,35 @@ function Layout({ children }: LayoutProps) {
         </div>
         {/* --Shopping icon-- */}
         <div className="badge-wrapper" onClick={toggleDiv}>
-          <FontAwesomeIcon className="badge-wrapper__shopping-cart-icon" icon={faCartShopping} />
+          <FontAwesomeIcon
+            className="badge-wrapper__shopping-cart-icon"
+            icon={faCartShopping}
+          />
           <div className="badge">{getdata.length}</div>
         </div>
         {/* --Shopping icon--*/}
         <div className="menu-container__global" onClick={handleClose}>
-          {(showDiv && location.pathname === '/card') && (
+          {showDiv && location.pathname === "/card" && (
             <div className="menu-container">
               {getdata.length ? (
-                <div className="card-details">       
-                   <table>                  
-                     <thead>
+                <div className="card-details">
+                  <table>
+                    <thead>
                       <tr>
-                        <th>Photo</th>                       
-                        <th>Restaurant Name</th>                       
-                      </tr>                 
-                    </thead>                  
+                        <th>Photo</th>
+                        <th>Restaurant Name</th>
+                      </tr>
+                    </thead>
                     <tbody>
                       {getdata.map((element) => {
                         return (
                           <tr key={element._id}>
                             <td>
-                              <NavLink to={`/cart/${element._id}`} onClick={handleClose}>
-                                <img src={element.imgdata} alt=""/>                       
+                              <NavLink
+                                to={`/cart/${element._id}`}
+                                onClick={handleClose}
+                              >
+                                <img src={element.imgdata} alt="" />
                               </NavLink>
                             </td>
                             <td>
@@ -117,7 +126,10 @@ function Layout({ children }: LayoutProps) {
                               <p>Price: ${element.price}</p>
                               <p>Quantity: {element.qnty}</p>
                             </td>
-                            <td className="trash" onClick={() => deleteCart(element)}>
+                            <td
+                              className="trash"
+                              onClick={() => deleteCart(element)}
+                            >
                               <FontAwesomeIcon icon={faTrash} />
                             </td>
                           </tr>
@@ -126,7 +138,7 @@ function Layout({ children }: LayoutProps) {
                     </tbody>
                     <tfoot>
                       <tr>
-                        <td className="price-total" >
+                        <td className="price-total">
                           <p className="price-total__sum">Total: ${price}</p>
                         </td>
                       </tr>
@@ -135,9 +147,13 @@ function Layout({ children }: LayoutProps) {
                 </div>
               ) : (
                 <div className="card-details">
-                  <FontAwesomeIcon className="close-icon" icon={faClose} onClick={toggleDiv} />                   
-                   <p className="paragraph-empty-card">Your cart is empty</p>
-                   <img className="emptycart-img" src="./cart.gif" alt=""/>
+                  <FontAwesomeIcon
+                    className="close-icon"
+                    icon={faClose}
+                    onClick={toggleDiv}
+                  />
+                  <p className="paragraph-empty-card">Your cart is empty</p>
+                  <img className="emptycart-img" src="./cart.gif" alt="" />
                 </div>
               )}
             </div>
@@ -152,12 +168,18 @@ function Layout({ children }: LayoutProps) {
             </Link>
           </button>
           <button>
-            <Link to="https://www.youtube.com/watch?v=Iwc6mEHQBFc" target="_blank">
+            <Link
+              to="https://www.youtube.com/watch?v=Iwc6mEHQBFc"
+              target="_blank"
+            >
               <img src={youtube} alt="Youtube" />
             </Link>
           </button>
           <button>
-            <Link to="https://twitter.com/_restaurant_bot/status/1623938594514649088?lang=en" target="_blank">
+            <Link
+              to="https://twitter.com/_restaurant_bot/status/1623938594514649088?lang=en"
+              target="_blank"
+            >
               <img src={twitter} alt="Twitter" />
             </Link>
           </button>
