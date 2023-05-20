@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
-import { getUserByCookie } from "./userAPI";
+import { getUserByCookieMain } from "./userAPI";
 import { User } from "./userModel";
 
 export enum Status {
@@ -22,23 +22,30 @@ const initialState: UserState = {
 export const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    resetUser: (state) => {
+      state.value = null;
+      state.status = Status.IDLE;
+    },
+  },
   extraReducers: (builder) => {
     builder
-      .addCase(getUserByCookie.pending, (state) => {
+      .addCase(getUserByCookieMain.pending, (state) => {
         state.status = Status.LOADING;
       })
-      .addCase(getUserByCookie.fulfilled, (state, action) => {
+      .addCase(getUserByCookieMain.fulfilled, (state, action) => {
         state.status = Status.IDLE;
         state.value = action.payload;
       })
-      .addCase(getUserByCookie.rejected, (state) => {
+      .addCase(getUserByCookieMain.rejected, (state) => {
         state.status = Status.FAILED;
       })
   },
 });
 
 
+
+export const { resetUser } = userSlice.actions;
 export const userSelector = (state: RootState) => state.user.value;
 export const userStatusSelector = (state: RootState) => state.user.status;
 

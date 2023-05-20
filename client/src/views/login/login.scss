@@ -1,6 +1,7 @@
 html,
 body {
   height: 100%;
+
 }
 
 body,
@@ -17,15 +18,16 @@ body {
   justify-content: center;
   align-items: center;
 
+
   .login {
     justify-content: center;
     height: 350px;
     width: 400px;
     margin: auto;
     padding: 60px 60px;
-    background-color: #2f6c9e; 
+    background-color: #2f6c9e;
     background-size: cover;
-    box-shadow: 0px 30px 60px -5px #24547c; 
+    box-shadow: 0px 30px 60px -5px #24547c;
     border-radius: 30px;
 
     .login__header--active {
@@ -58,6 +60,7 @@ body {
       position: relative;
       top: -65px;
       transition: all 0.5s ease-in-out;
+      color: white;
     }
 
     .input {
@@ -100,10 +103,10 @@ body {
 
     h2,
     span {
-      margin-left: 20px;     
-     }
+      margin-left: 20px;
+    }
 
-    .span{    
+    .span {
       font-size: 14px;
     }
 
@@ -111,15 +114,17 @@ body {
       display: inline-block;
       padding-top: 10px;
       padding-left: 5px;
+
     }
 
-    .login__error{     
-       text-align: center;
-       font-size: 14px;
+    .login__error {
+      text-align: center;
+      font-size: 14px;
+      color: #FFF;
     }
-    
+
     .login__button {
-      background-color: #24547c; 
+      background-color: #24547c;
       color: #FFF;
       width: 100%;
       padding: 10px 20px;
@@ -133,10 +138,34 @@ body {
     }
 
     .login__button:hover {
-      background: #24547c; 
-      box-shadow: 0px 4px 35px -5px #24547c; 
+      background: #24547c;
+      box-shadow: 0px 4px 35px -5px #24547c;
       cursor: pointer;
     }
+
+    .remove__button,
+    .update__button {
+      border: 1px solid white;
+      color: white;
+      text-align: right;
+      font-style: inherit;
+      margin-top: 25px;
+      display: inline-block;
+      padding: 3px 15px;
+      border-radius: 20px;
+    }
+
+    .remove__button {
+      margin-left: 15px;
+    }
+
+    .remove__button:hover,
+    .update__button:hover {
+      background: #24547c;
+      box-shadow: 0px 4px 35px -5px #24547c;
+      cursor: pointer;
+    }
+
 
     #idUserName:hover,
     #idPassword:hover {

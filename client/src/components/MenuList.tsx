@@ -3,7 +3,7 @@ import axios from "axios";
 import ApiMenu from "./api/ApiMenu";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { userSelector } from "../features/user/userSlice";
-import { getUserByCookie } from "../features/user/userAPI";
+import { getUserByCookieMain } from "../features/user/userAPI";
 import { useNavigate } from "react-router-dom";
 import  MenuScheme  from "../../src/components/api/MenuScheme"
 
@@ -24,8 +24,8 @@ const MenuList = () => {
     }
   }
 
-  useEffect(() => {
-    dispatch(getUserByCookie());
+  useEffect(() => {  
+    dispatch(getUserByCookieMain());
     if (!user) {
       navigate("/");
     }

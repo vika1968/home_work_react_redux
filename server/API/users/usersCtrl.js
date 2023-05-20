@@ -35,10 +35,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUser = exports.login = exports.register = void 0;
+exports.getUserByID = exports.deleteUser = exports.updateUser = exports.getUser = exports.login = exports.register = void 0;
 const userModel_1 = __importStar(require("./userModel"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jwt_simple_1 = __importDefault(require("jwt-simple"));
+const bson_1 = require("bson");
 const saltRounds = 10;
 function register(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -47,8 +48,9 @@ function register(req, res) {
             if (!email || !password)
                 throw new Error("Not all fields are available from req.body");
             const { error } = userModel_1.UserValidation.validate({ email, password });
-            if (error)
-                throw error;
+            if (error) {
+                return res.status(500).send({ success: false, error: "A user with this email address already exists." });
+            }
             const salt = bcrypt_1.default.genSaltSync(saltRounds);
             const hash = bcrypt_1.default.hashSync(password, salt);
             const userDB = new userModel_1.default({ email, password: hash });
@@ -86,7 +88,7 @@ function login(req, res) {
                 throw new Error("No password in DB");
             const isMatch = yield bcrypt_1.default.compare(password, userDB.password);
             if (!isMatch)
-                throw new Error("Email or password do not match");
+                throw new Error("Email or password don't match");
             //creating cookie
             const cookie = { userId: userDB._id };
             const secret = process.env.JWT_SECRET;
@@ -109,13 +111,16 @@ function getUser(req, res) {
             if (!secret)
                 throw new Error("Couldn't load secret from .env");
             const { userID } = req.cookies;
+            //console.log(userID)
             if (!userID)
                 throw new Error("Couldn't find user from cookies");
             const decodedUserId = jwt_simple_1.default.decode(userID, secret);
-            const { userId } = decodedUserId;
+            const { userID: userId } = decodedUserId;
+            console.log(decodedUserId);
+            console.log(userId);
             const userDB = yield userModel_1.default.findById(userId);
             if (!userDB)
-                throw new Error(`Couldn't find user id with the id: ${userID}`);
+                throw new Error(`Couldn't find user id with the id: ${userId}`);
             userDB.password = undefined;
             res.send({ userDB });
         }
@@ -125,3 +130,82 @@ function getUser(req, res) {
     });
 }
 exports.getUser = getUser;
+function updateUser(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const { email, password, id } = req.body;
+            if (!email || !password || !id) {
+                throw new Error('No data received from the user.');
+            }
+            const { error } = userModel_1.UserValidation.validate({ email, password });
+            if (error) {
+                return res.status(500).send({
+                    success: false,
+                    error: error.message,
+                });
+            }
+            const salt = bcrypt_1.default.genSaltSync(saltRounds);
+            const hash = bcrypt_1.default.hashSync(password, salt);
+            const filter = { _id: new bson_1.ObjectId(id) };
+            const update = { $set: { email, password: hash } };
+            const result = yield userModel_1.default.updateOne(filter, update);
+            if (result.modifiedCount === 0) {
+                return res.status(500).send({
+                    success: false,
+                    error: "Failed to update user data",
+                });
+            }
+            const secret = process.env.JWT_SECRET;
+            if (!secret)
+                return res.status(500).send({ success: false, error: "Couldn't load secret code from .env" });
+            const cookie = { userID: id };
+            const JWTCookie = jwt_simple_1.default.encode(cookie, secret);
+            //console.log(cookie)
+            res.cookie("userID", JWTCookie);
+            res.send({ success: true, userArray: result });
+        }
+        catch (error) {
+            res.status(500).send({ success: false, error: error.message });
+        }
+    });
+}
+exports.updateUser = updateUser;
+function deleteUser(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const id = req.params.id;
+            if (!id) {
+                return res.status(400).json({ error: "Missing user ID." });
+            }
+            const result = yield userModel_1.default.deleteOne({ _id: new bson_1.ObjectId(id) });
+            if (result.deletedCount === 0) {
+                return res.status(404).json({ error: "No user found with the specified ID." });
+            }
+            res.clearCookie('userID');
+            return res.status(200).json({ success: "The user has been deleted." });
+        }
+        catch (error) {
+            res.status(500).json({ success: false, error: error.message });
+        }
+    });
+}
+exports.deleteUser = deleteUser;
+function getUserByID(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const id = req.params.id;
+            if (!id) {
+                return res.status(400).json({ error: "Missing user ID." });
+            }
+            const user = yield userModel_1.default.findOne({ _id: new bson_1.ObjectId(id) });
+            if (!user) {
+                return res.status(404).json({ error: "No user found with the specified ID." });
+            }
+            return res.status(200).json({ success: "User found.", user: user });
+        }
+        catch (error) {
+            res.status(500).json({ success: false, error: error.message });
+        }
+    });
+}
+exports.getUserByID = getUserByID;
