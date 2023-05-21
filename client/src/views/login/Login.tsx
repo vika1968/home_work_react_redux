@@ -115,9 +115,13 @@ const Login = () => {
       }
       const { data } = await axios.post(route, { email, password });
     
-      const { success, userDB } = data;         
-
-      if (success) {       
+      const { success, userDB } = data;  
+      
+      console.log(data.userDB)     
+      console.log(success)   
+    
+      if (success ===true) {  
+        console.log(success)       
         navigate("/card");        
       }
 

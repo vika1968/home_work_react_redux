@@ -111,18 +111,15 @@ function getUser(req, res) {
             if (!secret)
                 throw new Error("Couldn't load secret from .env");
             const { userID } = req.cookies;
-            //console.log(userID)
             if (!userID)
                 throw new Error("Couldn't find user from cookies");
             const decodedUserId = jwt_simple_1.default.decode(userID, secret);
             const { userID: userId } = decodedUserId;
-            console.log(decodedUserId);
-            console.log(userId);
-            const userDB = yield userModel_1.default.findById(userId);
+            const userDB = yield userModel_1.default.findById(decodedUserId.userId);
             if (!userDB)
-                throw new Error(`Couldn't find user id with the id: ${userId}`);
+                throw new Error(`Couldn't find user id with the id: ${decodedUserId.userId}`);
             userDB.password = undefined;
-            res.send({ userDB });
+            res.send({ success: true, userDB });
         }
         catch (error) {
             res.status(500).send({ error: error.message });
@@ -160,7 +157,6 @@ function updateUser(req, res) {
                 return res.status(500).send({ success: false, error: "Couldn't load secret code from .env" });
             const cookie = { userID: id };
             const JWTCookie = jwt_simple_1.default.encode(cookie, secret);
-            //console.log(cookie)
             res.cookie("userID", JWTCookie);
             res.send({ success: true, userArray: result });
         }

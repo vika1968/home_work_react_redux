@@ -43,8 +43,6 @@ export const userSlice = createSlice({
   },
 });
 
-
-
 export const { resetUser } = userSlice.actions;
 export const userSelector = (state: RootState) => state.user.value;
 export const userStatusSelector = (state: RootState) => state.user.status;

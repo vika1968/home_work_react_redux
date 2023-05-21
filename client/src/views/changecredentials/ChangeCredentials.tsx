@@ -71,7 +71,6 @@ const ChangeCredentials = () => {
         id: user,
       });
 
-      console.log(response)
       if (response.data.userArray.modifiedCount !== 1) {
         alert("Something went wrong. Please check your data.");
       } else {

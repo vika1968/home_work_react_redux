@@ -4,15 +4,24 @@ import ApiMenu from "./api/ApiMenu";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { userSelector } from "../features/user/userSlice";
 import { getUserByCookieMain } from "../features/user/userAPI";
-import { useNavigate } from "react-router-dom";
 import  MenuScheme  from "../../src/components/api/MenuScheme"
 
 const MenuList = () => {
-  const navigate = useNavigate();
+
   const [menu, setMenu] = useState<MenuScheme[]>([]);
 
   const dispatch = useAppDispatch();
   const user = useAppSelector(userSelector);
+
+  useEffect(() => {  
+
+    if (!user) {
+      dispatch(getUserByCookieMain());
+    }
+
+    handleMenu();
+  }, []);
+
 
   async function handleMenu() {
     try {
@@ -23,14 +32,6 @@ const MenuList = () => {
       console.error(error.response.data.error);
     }
   }
-
-  useEffect(() => {  
-    dispatch(getUserByCookieMain());
-    if (!user) {
-      navigate("/");
-    }
-    handleMenu();
-  }, []);
 
   if (!user) {
     return (

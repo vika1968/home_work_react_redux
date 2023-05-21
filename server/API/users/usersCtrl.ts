@@ -76,21 +76,17 @@ export async function getUser(req: express.Request, res: express.Response) {
     const secret = process.env.JWT_SECRET;
     if (!secret) throw new Error("Couldn't load secret from .env");
 
-    const { userID } = req.cookies;
-    //console.log(userID)
+    const { userID } = req.cookies;    
     if (!userID) throw new Error("Couldn't find user from cookies");
 
     const decodedUserId = jwt.decode(userID, secret);
-    const { userID: userId } = decodedUserId;   
+    const { userID: userId } = decodedUserId;      
+ 
+    const userDB = await UserModel.findById(decodedUserId.userId);  
     
-    console.log(decodedUserId);
-    console.log(userId);
-
-    const userDB = await UserModel.findById(userId);  
-    
-    if (!userDB) throw new Error(`Couldn't find user id with the id: ${userId}`);
+    if (!userDB) throw new Error(`Couldn't find user id with the id: ${decodedUserId.userId}`);
     userDB.password = undefined;
-    res.send({ userDB });
+    res.send({ success: true, userDB });
 
   } catch (error:any) {
     res.status(500).send({ error: error.message });
@@ -135,7 +131,7 @@ export async function updateUser(req: express.Request, res: express.Response) {
 
     const cookie = { userID: id };
     const JWTCookie = jwt.encode(cookie, secret);
-    //console.log(cookie)
+
     res.cookie("userID", JWTCookie);
     res.send({ success: true, userArray: result });
   } catch (error: any) {
