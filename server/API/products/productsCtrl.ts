@@ -1,7 +1,6 @@
 import express from "express";
 import ProductsModel from "./productsModel";
 
-// insert All produsta
 export async function insertProductsAll(req: express.Request, res: express.Response) {
   try {
 
@@ -20,7 +19,6 @@ export async function insertProductsAll(req: express.Request, res: express.Respo
   }
 }
 
-// get All produsta
 export async function getAllProducts(req: express.Request, res: express.Response) {
   try {
     

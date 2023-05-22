@@ -10,7 +10,7 @@ const ChangeCredentials = () => {
 
   const handleGetUserByID = async () => {
     try {
-      const { data } = await axios.get(`/api/users/${user}`);        
+      const { data } = await axios.get(`/api/users/${user}`);
       if (!data) {
         alert("No valid user");
         navigate(`/`);
@@ -20,9 +20,9 @@ const ChangeCredentials = () => {
     }
   };
 
-  useEffect(() => { 
+  useEffect(() => {
     handleGetUserByID();
-  }, []);
+  }, [user]);
 
   const handleSubmit = async (event: any) => {
     try {
@@ -39,7 +39,7 @@ const ChangeCredentials = () => {
       }
 
       const newEmail = email;
-     
+
       if (!newEmail) {
         alert(
           "You didn't enter an email value, so your email will remain unchanged."
@@ -71,11 +71,15 @@ const ChangeCredentials = () => {
         id: user,
       });
 
-      if (response.data.userArray.modifiedCount !== 1) {
+      if (
+        response &&
+        response.data &&
+        response.data.userArray.modifiedCount !== 1
+      ) {
         alert("Something went wrong. Please check your data.");
       } else {
-        alert("Your permission has been changed.");     
-           navigate("/card");    
+        alert("Your permission has been changed.");
+        navigate("/card");
       }
     } catch (error: any) {
       alert(error.response.data.error);

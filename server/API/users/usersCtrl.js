@@ -55,7 +55,6 @@ function register(req, res) {
             const hash = bcrypt_1.default.hashSync(password, salt);
             const userDB = new userModel_1.default({ email, password: hash });
             yield userDB.save();
-            //creating cookie
             const cookie = { userId: userDB._id };
             const secret = process.env.JWT_SECRET;
             if (!secret)
@@ -89,7 +88,6 @@ function login(req, res) {
             const isMatch = yield bcrypt_1.default.compare(password, userDB.password);
             if (!isMatch)
                 throw new Error("Email or password don't match");
-            //creating cookie
             const cookie = { userId: userDB._id };
             const secret = process.env.JWT_SECRET;
             if (!secret)

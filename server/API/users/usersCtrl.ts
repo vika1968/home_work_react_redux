@@ -9,13 +9,13 @@ const saltRounds = 10;
 export async function register(req: express.Request, res: express.Response) {
   try {
     const { email, password } = req.body;
-    if (!email || !password)     
-     throw new Error("Not all fields are available from req.body");
+    if (!email || !password)
+      throw new Error("Not all fields are available from req.body");
 
-    
+
     const { error } = UserValidation.validate({ email, password });
     if (error) {
-        return res.status(500).send({ success: false, error: "A user with this email address already exists." });
+      return res.status(500).send({ success: false, error: "A user with this email address already exists." });
     }
 
     const salt = bcrypt.genSaltSync(saltRounds);
@@ -24,12 +24,11 @@ export async function register(req: express.Request, res: express.Response) {
     const userDB = new UserModel({ email, password: hash });
     await userDB.save();
 
-    //creating cookie
     const cookie = { userId: userDB._id };
     const secret = process.env.JWT_SECRET;
     if (!secret) throw new Error("Couldn't load secret from .env");
 
-    const JWTCookie = jwt.encode(cookie, secret);       
+    const JWTCookie = jwt.encode(cookie, secret);
 
     if (userDB) {
       res.cookie("userID", JWTCookie);
@@ -44,20 +43,19 @@ export async function register(req: express.Request, res: express.Response) {
 
 export async function login(req: express.Request, res: express.Response) {
   try {
-    const { email, password } = req.body;  
- 
+    const { email, password } = req.body;
+
     if (!email || !password)
       throw new Error("Not all fields are available from req.body");
 
-    const userDB = await UserModel.findOne({ email });   
-  
+    const userDB = await UserModel.findOne({ email });
+
     if (!userDB) throw new Error("User with that email can't be found");
     if (!userDB.password) throw new Error("No password in DB");
 
     const isMatch = await bcrypt.compare(password, userDB.password);
     if (!isMatch) throw new Error("Email or password don't match");
 
-    //creating cookie
     const cookie = { userId: userDB._id };
     const secret = process.env.JWT_SECRET;
     if (!secret) throw new Error("Couldn't load secret from .env");
@@ -76,19 +74,19 @@ export async function getUser(req: express.Request, res: express.Response) {
     const secret = process.env.JWT_SECRET;
     if (!secret) throw new Error("Couldn't load secret from .env");
 
-    const { userID } = req.cookies;    
+    const { userID } = req.cookies;
     if (!userID) throw new Error("Couldn't find user from cookies");
 
     const decodedUserId = jwt.decode(userID, secret);
-    const { userID: userId } = decodedUserId;      
- 
-    const userDB = await UserModel.findById(decodedUserId.userId);  
-    
+    const { userID: userId } = decodedUserId;
+
+    const userDB = await UserModel.findById(decodedUserId.userId);
+
     if (!userDB) throw new Error(`Couldn't find user id with the id: ${decodedUserId.userId}`);
     userDB.password = undefined;
     res.send({ success: true, userDB });
 
-  } catch (error:any) {
+  } catch (error: any) {
     res.status(500).send({ error: error.message });
   }
 }
@@ -98,7 +96,7 @@ export async function updateUser(req: express.Request, res: express.Response) {
   try {
     const { email, password, id } = req.body;
 
- 
+
     if (!email || !password || !id) {
       throw new Error('No data received from the user.');
     }
@@ -112,7 +110,7 @@ export async function updateUser(req: express.Request, res: express.Response) {
     const salt = bcrypt.genSaltSync(saltRounds);
     const hash = bcrypt.hashSync(password, salt);
 
-   
+
     const filter = { _id: new ObjectId(id) };
     const update = { $set: { email, password: hash } };
 
@@ -142,13 +140,13 @@ export async function updateUser(req: express.Request, res: express.Response) {
 
 export async function deleteUser(req: express.Request, res: express.Response) {
   try {
-    const id = req.params.id;  
+    const id = req.params.id;
     if (!id) {
       return res.status(400).json({ error: "Missing user ID." });
     }
 
     const result = await UserModel.deleteOne({ _id: new ObjectId(id) });
-    
+
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: "No user found with the specified ID." });
     }

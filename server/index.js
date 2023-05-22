@@ -12,7 +12,6 @@ const app = (0, express_1.default)();
 dotenv_1.default.config();
 const mongodb_uri = process.env.MONGO_URI;
 const PORT = process.env.PORT;
-// future implementation
 mongoose_1.default.set("strictQuery", true);
 mongoose_1.default
     .connect(mongodb_uri)

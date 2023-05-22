@@ -47,9 +47,7 @@ const Login = () => {
         if (event.target.dataset.value === "RemoveUser") {
           const deleteResponse = await axios.delete(`/api/users/${id}`);
           if (deleteResponse.statusText === "OK") {
-            alert("User was successfully deleted.");
-
-            // Dispatch the resetUser action
+            alert("User was successfully deleted.");           
             dispatch(resetUser());
           }
         } else {
@@ -60,38 +58,6 @@ const Login = () => {
       setError(error.response.data.error);
     }
   };
-
-  // async function handleSubmit(event: any) {
-  //   try {
-  //     event.preventDefault();
-  //     if (!email) {
-  //       alert(`Please, fill username field!`);
-  //       return;
-  //     }
-
-  //     if (!password) {
-  //       alert(`Please, fill password field!`);
-  //       return;
-  //     }
-
-  //     let route: string;
-
-  //     if (whatClicked === `Register`) {
-  //       route = "/api/users/register";
-  //     } else {
-  //       route = "/api/users/login";
-  //     }
-
-  //     const { data } = await axios.post(route, { email, password });
-  //     const { success, userDB } = data;
-
-  //     if (success) {
-  //       navigate(`/homepage`, { state: { email } });
-  //     }
-  //   } catch (error: any) {
-  //     setError(error.response.data.error);
-  //   }
-  // }
 
   async function handleSubmit(event: any) {
     try {
@@ -190,8 +156,8 @@ const Login = () => {
         type="email"
         placeholder="email"
         required
-        onInput={(ev: any) => {
-          setEmail(ev.target.value);
+        onInput={(event: any) => {
+          setEmail(event.target.value);
         }}
       />
       <span>username</span>
@@ -204,11 +170,11 @@ const Login = () => {
         type="password"
         placeholder="password"
         required
-        onInput={(ev: any) => {
-          setPassword(ev.target.value);
+        onInput={(event: any) => {
+          setPassword(event.target.value);
         }}
-        onChange={(ev: any) => {
-          handleChange(ev.target.value);
+        onChange={(event: any) => {
+          handleChange(event.target.value);
         }}
       />
       <span>password</span>

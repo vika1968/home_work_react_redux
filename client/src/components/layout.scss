@@ -46,7 +46,7 @@ header label {
 
 header nav,
 header .leb-menu {
-   background-color: #2f6c9e; 
+   background-color: #2f6c9e;
 }
 
 .menu {
@@ -119,12 +119,12 @@ header .leb-menu {
 
       table {
          border: 1px solid white;
-         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);   
-           
-         thead{
+         box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+
+         thead {
             font-size: 15px;
-         }        
-          
+         }
+
          td {
             padding: 5px;
             font-size: 15px;
@@ -150,23 +150,23 @@ header .leb-menu {
          font-style: italic;
       }
 
-      .close-icon{         
-            position: absolute;
-            top: 2px;
-            right: 20px;
-            font-size: 15px;
-            cursor: pointer;              
+      .close-icon {
+         position: absolute;
+         top: 2px;
+         right: 20px;
+         font-size: 15px;
+         cursor: pointer;
       }
 
-      .paragraph-empty-card{
-         font-size: 22px;         
+      .paragraph-empty-card {
+         font-size: 22px;
       }
 
-      .emptycart-img{
-          width: 3rem;
-          height: 3rem;
-          padding: 10px;     
-       }
+      .emptycart-img {
+         width: 3rem;
+         height: 3rem;
+         padding: 10px;
+      }
    }
 
    .section-social-networks {
@@ -233,7 +233,9 @@ header label:hover {
       .section-logo .logo {
          display: none;
       }
-      .badge-wrapper, .menu-container__global{
+
+      .badge-wrapper,
+      .menu-container__global {
          display: none;
       }
 
@@ -268,6 +270,7 @@ header label:hover {
 }
 
 @media all and (max-width: 650px) {
+
    //small monitor
    .menu {
       display: block;

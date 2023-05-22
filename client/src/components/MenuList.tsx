@@ -4,24 +4,21 @@ import ApiMenu from "./api/ApiMenu";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { userSelector } from "../features/user/userSlice";
 import { getUserByCookieMain } from "../features/user/userAPI";
-import  MenuScheme  from "../../src/components/api/MenuScheme"
+import MenuScheme from "../../src/components/api/MenuScheme";
 
 const MenuList = () => {
-
   const [menu, setMenu] = useState<MenuScheme[]>([]);
 
   const dispatch = useAppDispatch();
   const user = useAppSelector(userSelector);
 
-  useEffect(() => {  
-
+  useEffect(() => {
     if (!user) {
       dispatch(getUserByCookieMain());
     }
 
     handleMenu();
   }, []);
-
 
   async function handleMenu() {
     try {

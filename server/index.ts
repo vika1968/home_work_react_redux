@@ -11,7 +11,6 @@ dotenv.config();
 const mongodb_uri = process.env.MONGO_URI;
 const PORT = process.env.PORT;
 
-// future implementation
 mongoose.set("strictQuery", true);
 
 mongoose
@@ -29,7 +28,6 @@ app.use(cookieParser());
 
 import usersRoutes from "./API/users/usersRoutes";
 import productsRoutes from "./API/products/productsRoutes";
-
 
 app.use("/api/users", usersRoutes);
 app.use("/api/products", productsRoutes)

@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAllProducts = exports.insertProductsAll = void 0;
 const productsModel_1 = __importDefault(require("./productsModel"));
-// insert All produsta
 function insertProductsAll(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -35,7 +34,6 @@ function insertProductsAll(req, res) {
     });
 }
 exports.insertProductsAll = insertProductsAll;
-// get All produsta
 function getAllProducts(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {

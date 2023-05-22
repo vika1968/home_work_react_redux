@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Add_Cart, Remove_Cart, Remove_Portion,} from "../features/menu/cartSlice";
+import { Add_Cart, CartItem, Remove_Cart, Remove_Portion,} from "../features/menu/cartSlice";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MenuScheme from "./api/MenuScheme";
+import { RootState } from "../app/store";
 
 const CardsDetails = () => {
   const [data, setData] = useState<MenuScheme[]>([]);
@@ -12,7 +13,7 @@ const CardsDetails = () => {
 
   const history = useNavigate();
   const dispatch = useDispatch();
-  const getdata = useSelector((state: any) => state.cart.carts);
+  const getdata = useSelector((state: RootState) => state.cart.carts);
 
   const compare = () => {
     let comparedata: MenuScheme[] = getdata.filter((element: MenuScheme) => {
@@ -26,13 +27,13 @@ const CardsDetails = () => {
     dispatch(Add_Cart(item));
   };
 
-  const deleteCart = (item: any) => {  
+  const deleteCart = (item: CartItem) => {  
     dispatch(Remove_Cart(item));
     history("/card");
   };
 
   // remove one
-  const remove = (item: any) => {  
+  const remove = (item: CartItem) => {  
     dispatch(Remove_Portion(item));
   };
 
